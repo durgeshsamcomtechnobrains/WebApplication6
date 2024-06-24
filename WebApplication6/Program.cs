@@ -11,13 +11,10 @@ namespace WebApplication6
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            // Add services to the container.
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -29,18 +26,19 @@ namespace WebApplication6
                 app.UseSwaggerUI();
             }
 
-            // Configure SignalR
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<ChatHub>("/chatHub"); // Example endpoint, replace with your own
-                // Add other endpoints as needed
-            });
-            app.UseHttpsRedirection();
+            // Add routing before endpoints configuration
+            app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
-            app.MapControllers();
+            // Configure SignalR hub and other endpoints
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chatHub"); // Example SignalR endpoint
+                endpoints.MapControllers();
+            });
 
             app.Run();
         }
