@@ -15,6 +15,7 @@ namespace WebApplication6
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -28,6 +29,12 @@ namespace WebApplication6
                 app.UseSwaggerUI();
             }
 
+            // Configure SignalR
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chatHub"); // Example endpoint, replace with your own
+                // Add other endpoints as needed
+            });
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
