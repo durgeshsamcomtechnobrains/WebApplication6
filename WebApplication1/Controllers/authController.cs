@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Model.DTO_s;
 using WebApplication1.Repository;
 using WebApplication1.Repository.IRepository;
@@ -7,6 +8,7 @@ namespace WebApplication1.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors]
     public class authController : ControllerBase
     {
         private readonly IUserService _userService;
