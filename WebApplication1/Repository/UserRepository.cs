@@ -14,6 +14,11 @@ namespace WebApplication1.Repository
             _db = db;
         }
 
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _db.Users.ToListAsync();
+        }        
+
         public async Task<User> GetUserByIdAsync(Guid id)
         {
             return await _db.Users.FindAsync(id);

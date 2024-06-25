@@ -20,8 +20,13 @@ namespace WebApplication1.Repository
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString())
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+
+
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
@@ -54,8 +59,8 @@ namespace WebApplication1.Repository
             var expires = DateTime.UtcNow.AddDays(1); // Token expiration time
 
             var token = new JwtSecurityToken(
-                issuer: "https://localhost:7276",
-                audience: "https://localhost:7276",
+                issuer: "http://localhost:5168",
+                audience: "http://localhost:5168",
                 claims: claims,
                 expires: expires,
                 signingCredentials: creds);
