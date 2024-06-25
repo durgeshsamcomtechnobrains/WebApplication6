@@ -7,24 +7,10 @@ namespace WebApplication1.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
-    {
-        private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
+    {        
+        public UserController()
         {
-            _userService = userService;
+            
         }
-
-        [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] UserRegistrationDto userDto)
-        {
-            var result = await _userService.RegisterUserAsync(userDto);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(new { error = result.ErrorMessage });
-            }
-            return CreatedAtAction(nameof(SignUp), new { id = result.User.Id }, result.User);
-        }
-
     }
 }
