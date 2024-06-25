@@ -21,7 +21,20 @@ namespace WebApplication1.Repository
             _tokenService = tokenService;
             _httpContextAccessor = httpContextAccessor;
         }
-        
+
+        public async Task<User> AuthenticateAsync(string userName, string password)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == userName);
+
+            if (user == null)
+                return null;
+
+            if (_passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) == PasswordVerificationResult.Success)
+                return user;
+
+            return null;
+        }
+
         public async Task<UserRegistrationResult> RegisterUserAsync(UserRegistrationDto userDto)
         {
             if (userDto.Password != userDto.ConfirmPassword)

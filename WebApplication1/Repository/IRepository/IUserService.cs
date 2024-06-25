@@ -5,6 +5,7 @@ namespace WebApplication1.Repository.IRepository
 {
     public interface IUserService
     {
-        Task<UserRegistrationResult> RegisterUserAsync(UserRegistrationDto userDto);
+        Task<User> AuthenticateAsync(string userName, string password);
+        Task<UserRegistrationResult> RegisterUserAsync(UserRegistrationDto userDto);        
     }
 }
