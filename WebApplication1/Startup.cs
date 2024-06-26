@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using WebApplication1.Data;
 using WebApplication1.Model;
 using WebApplication1.Repository;
@@ -57,7 +60,7 @@ namespace WebApplication1
                            .AllowAnyHeader()
                            .AllowCredentials();
                 });
-            });
+            });            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,11 +81,17 @@ namespace WebApplication1
             app.UseRouting();
             app.UseCors("CorsPolicy");
             //app.UseHttpsRedirection();
-            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());            
-
+            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapControllerRoute(
+                name: "SendMessage",
+                pattern: "api/Messages/{senderId}/{receiverId}",
+                defaults: new { controller = "Messages", action = "SendMessage" }
+            );
             });
         }        
     }
